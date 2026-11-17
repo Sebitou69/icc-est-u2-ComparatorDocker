@@ -1,98 +1,154 @@
-# Entorno de evaluación
+# PL2.1 — Ordenamiento de estudiantes con Comparator y Comparable
 
-Trabaje dentro de `/home/coder/project`. Los repositorios clonados deben quedar como subcarpetas de este directorio.
+**Universidad:** Universidad Politécnica Salesiana  
+**Carrera:** Computación  
+**Asignatura:** Estructura de Datos  
+**Docente:** Ing. Pablo Torres, Mgtr.  
+**Autores:** Sebastián Cárdenas y Erick Chang  
+**Versión de Java:** JDK 17.0.19  
+**Entorno de desarrollo:** Visual Studio Code  
 
-## Python
+## 1. Objetivo
 
-Ejecutar un script básico:
+Implementar distintos criterios de ordenamiento de estudiantes utilizando las interfaces `Comparable` y `Comparator` de Java, aplicando expresiones lambda, referencias a métodos y comparadores compuestos.
 
-```bash
-python archivo.py
+También se busca comprobar la estabilidad de los ordenamientos, el correcto funcionamiento de los desempates y la conservación de los registros originales.
+
+## 2. Descripción del proyecto
+
+El programa administra una lista de 20 estudiantes ficticios, cada uno con cinco atributos:
+
+- Código
+- Nombre
+- Edad
+- Nota
+- Carrera
+
+El orden natural de los estudiantes se establece mediante su código. Adicionalmente, se implementan diferentes criterios de comparación utilizando `Comparator`.
+
+Cada consulta trabaja sobre una copia de la lista original para evitar modificar el orden inicial.
+
+## 3. Estructura del proyecto
+
+```text
+PL2.1/
+├── Estudiante.java
+├── Main.java
+├── README.md
+└── assets/
+    ├── C1
+    ├── C2
+    ├── C3
+    ├── C4
+    ├── C5
+    ├── C6
+    ├── C7
+    ├── codC1C5
+    ├── codC6C7
+    └── evidencias.md
 ```
 
-Crear un entorno virtual para instalar paquetes:
+**Estudiante.java:** contiene el modelo de los estudiantes, sus atributos, constructor, getters, método `toString()` e implementación de `Comparable`.
 
-```bash
-python -m venv .venv
-. .venv/bin/activate
-python -m pip install nombre-paquete
-```
+**Main.java:** contiene los datos de prueba, los comparadores, los métodos de ejecución y las verificaciones.
 
-## Java
+**assets/:** contiene los resultados reales de las consultas y las pruebas realizadas.
 
-Compilar y ejecutar una clase:
+## 4. Consultas implementadas
 
-```bash
-javac Archivo.java
-java Archivo
-```
+| ID | Criterio de ordenamiento | Implementación |
+|---|---|---|
+| C1 | Código ascendente | Comparable / naturalOrder |
+| C2 | Nombre ascendente, código ascendente | Lambda de dos parámetros |
+| C3 | Nota ascendente | comparingDouble y referencia a método |
+| C4 | Nota descendente, nombre ascendente | reversed y thenComparing |
+| C5 | Edad ascendente, nombre descendente | comparingInt y comparador secundario invertido |
+| C6 | Carrera ascendente, nota descendente, nombre ascendente, código ascendente | Comparador compuesto |
+| C7 | Nota ajustada descendente, nombre ascendente, código ascendente | Lambda y Math.min |
 
-Proyecto Maven:
+Para C2 también se implementa una versión alternativa con `comparing()` y `thenComparing()`.
 
-```bash
-mvn test
-mvn package
-```
+En C7 se incrementa temporalmente en 0.5 la nota utilizada para ordenar a los estudiantes de Computación, sin superar 10.0 ni modificar el valor original.
 
-## Spring Boot
+## 5. Requisitos y ejecución
 
-Con Maven Wrapper:
+Se utiliza Java JDK 17.0.19 y Visual Studio Code.
 
-```bash
-./mvnw spring-boot:run
-```
+Para compilar el proyecto desde una terminal ubicada en su directorio principal:
 
-Con Maven instalado:
+javac Estudiante.java Main.java
 
-```bash
-mvn spring-boot:run
-```
+Para ejecutar el programa:
 
-Con Gradle Wrapper:
+java Main
 
-```bash
-./gradlew bootRun
-```
+También puede ejecutarse desde Visual Studio Code mediante la extensión de Java y la opción de ejecutar el método `main`.
 
-Spring Boot puede usar el puerto `8080` dentro del contenedor. Cuando se publica con `-p 127.0.0.1:8081:8080`, la aplicación se abre en `http://localhost:8081`.
+## 6. Pruebas y validaciones
 
-## Git y GitHub
+El proyecto incluye comprobaciones de:
 
-Clonar un repositorio:
+- Ordenamiento correcto de C1–C7.
+- Conservación de los 20 registros.
+- Equivalencia entre las dos implementaciones de C2.
+- Estabilidad de C3 en estudiantes con nota 8.5.
+- Estabilidad de C4 en empates completos.
+- Procesamiento de listas vacías y de un elemento.
+- Conservación del orden de la lista original.
+- Conservación de las notas originales después de C7.
+- Dos casos de prueba adicionales.
 
-```bash
-git clone https://github.com/usuario/repositorio.git
-cd repositorio
-```
+### Registro de pruebas
 
-Guardar y subir cambios:
+La tabla deberá completarse con los resultados obtenidos durante la ejecución del programa.
 
-```bash
-git add .
-git commit -m "Entrega"
-git push
-```
+| Escenario | Resultado esperado | Resultado obtenido | Estado |
+|---|---|---|---|
+| C1: código ascendente | E001 hasta E020 | Pendiente de ejecutar | Pendiente |
+| C2: nombre y código | E005, E010, E014, E017 al inicio | Pendiente | Pendiente |
+| C3: estabilidad de nota 8.5 | E014, E007, E005, E008, E010 | Pendiente | Pendiente |
+| C4: nota descendente | E017, E011, E001 al inicio | Pendiente | Pendiente |
+| C5: edad y nombre | E001, E016, E004 al inicio | Pendiente | Pendiente |
+| C6: cuatro criterios | E001, E018, E005, E010, E014 al inicio | Pendiente | Pendiente |
+| C7: nota ajustada | E001 primero y E018 segundo | Pendiente | Pendiente |
+| Lista original | Mantener secuencia inicial | Pendiente | Pendiente |
 
-Verificar la identidad configurada:
+## 7. Análisis del ordenamiento
 
-```bash
-git config --global user.name
-git config --global user.email
-```
+### Comparable y Comparator
 
-Para subir por HTTPS, GitHub requiere autenticación válida. Puede utilizar un token personal o un mecanismo institucional previamente configurado.
+`Comparable` establece el orden natural de los objetos mediante `compareTo()`. En este proyecto se utiliza para organizar estudiantes por código.
 
-## Copiar y pegar
+`Comparator` permite definir diferentes criterios de ordenamiento sin modificar el orden natural de la clase.
 
-- Editor: `Ctrl + V`.
-- Alternativa en el editor: `Shift + Insert`.
-- Terminal: `Ctrl + Shift + V` o `Shift + Insert`.
-- Vista previa de Markdown: `Ctrl + Shift + V` sobre un archivo `.md`.
+### Criterios de desempate
 
-## Accesos sin barra lateral
+Los métodos `thenComparing()` permiten agregar condiciones secundarias que solamente se aplican cuando los valores del criterio anterior son iguales.
 
-- Explorador: `Ctrl + Shift + E`.
-- Búsqueda: `Ctrl + Shift + F`.
-- Control de versiones: `Ctrl + Shift + G`.
-- Ejecución y depuración: `Ctrl + Shift + D`.
-# icc-est-u2-ComparatorDocker
+El uso de `reversed()` debe considerar qué parte del comparador se desea invertir. Si se invierte un comparador compuesto completo, también se invierten sus criterios secundarios.
+
+### Estabilidad
+
+Un ordenamiento estable conserva el orden relativo de los elementos cuando el comparador devuelve cero.
+
+En C3, los estudiantes con la misma nota deben conservar el orden en que aparecieron originalmente.
+
+## 8. Evidencias
+
+Las salidas de las siete consultas y los resultados de las pruebas se almacenarán en la carpeta `assets/`.
+
+Se incluirá la secuencia completa de códigos y el resultado de cada validación.
+
+## 9. Conclusiones
+
+Conclusión 1: Se observó que C1 pone un orden fijo por código, mientras que C2 nos permite ordenar por nombre sin tener que cambiar la clase. Por lo q se concluye que Comparator es flexible
+
+Conclusión 2: thenComparing() nos deja ordenar por un segundo atributo en caso de que exista un empate o igual. La posición de reversed() es sumamente importante porque invierte solamente un criterio o toda la comparación.
+
+Conclusión 3: Mientras que C3 conserva el orden origial de los estudiantes con notas iguales, C7 demuestra que se puede ordenar usando una nota calculada sin cambiar los datos originales.
+
+## 10. Repositorio
+
+Enlace de GitHub: **https://github.com/Sebitou69/icc-est-u2-ComparatorDocker**.
+
+El repositorio contiene el código fuente, documentación, evidencias y el historial de commits del proyecto.

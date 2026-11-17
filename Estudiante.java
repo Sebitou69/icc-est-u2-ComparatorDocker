@@ -1,62 +1,60 @@
-public class Estudiante {
-  private String nombre;
-  private int edad;
-  private String codigo;
-  private double nota;
-  private String carrera;
 
-  public Estudiante(String codigo, String nombre, int edad, double nota, String carrera) {
-    this.nombre = nombre;
-    this.edad = edad;
-    this.codigo = codigo;
-    this.nota = nota;
-    this.carrera = carrera;
-  }
+public final class Estudiante implements Comparable<Estudiante> {
 
-  public String getNombre() {
-    return nombre;
-  }
+    private final String codigo;
+    private final String nombre;
+    private final int edad;
+    private final double nota;
+    private final String carrera;
 
-  public void setNombre(String nombre) {
-    this.nombre = nombre;
-  }
+    public Estudiante(String codigo, String nombre,
+                      int edad, double nota, String carrera) {
 
-  public int getEdad() {
-    return edad;
-  }
+        if (codigo == null || nombre == null || carrera == null
+                || codigo.isEmpty() || nombre.isEmpty()
+                || carrera.isEmpty()) {
+            throw new IllegalArgumentException("Texto invalido");
+        }
+        if (edad <= 0 || !Double.isFinite(nota)
+                || nota < 0 || nota > 10) {
+            throw new IllegalArgumentException("Edad o nota invalida");
+        }
 
-  public void setEdad(int edad) {
-    this.edad = edad;
-  }
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.edad = edad;
+        this.nota = nota;
+        this.carrera = carrera;
+    }
 
-  public String getCodigo() {
-    return codigo;
-  }
+    public String getCodigo() {
+        return codigo;
+    }
 
-  public void setCodigo(String codigo) {
-    this.codigo = codigo;
-  }
+    public String getNombre() {
+        return nombre;
+    }
 
-  public double getNota() {
-    return nota;
-  }
+    public int getEdad() {
+        return edad;
+    }
 
-  public void setNota(double nota) {
-    this.nota = nota;
-  }
+    public double getNota() {
+        return nota;
+    }
 
-  public String getCarrera() {
-    return carrera;
-  }
+    public String getCarrera() {
+        return carrera;
+    }
 
-  public void setCarrera(String carrera) {
-    this.carrera = carrera;
-  }
+    @Override
+    public int compareTo(Estudiante otro) {
+        return this.codigo.compareTo(otro.codigo);
+    }
 
-  @Override
-  public String toString() {
-    return "Estudiante [nombre=" + nombre + ", edad=" + edad + ", codigo=" + codigo + ", nota=" + nota + ", carrera="
-        + carrera + "]";
-  }
-
+    @Override
+    public String toString() {
+        return codigo + " | " + nombre + " | Edad: " + edad
+                + " | Nota: " + nota + " | Carrera: " + carrera;
+    }
 }
